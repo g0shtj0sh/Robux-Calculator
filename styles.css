@@ -1,0 +1,476 @@
+:root {
+  /* Default Theme: Green */
+  --accent-color: #00FF80;
+  --accent-color-secondary: #B6FCD5;
+  --accent-color-rgb: 0, 255, 128;
+  --text-on-accent: black; /* Text color for buttons with accent background */
+
+  /* Base colors (mostly for dark theme structure) */
+  --background-color: #0d0d0d;
+  --text-color: white;
+  --box-bg-color: rgba(0, 0, 0, 0.65);
+  --input-bg-color: rgba(255, 255, 255, 0.05);
+  --notification-error-bg: rgba(255, 0, 0, 0.2);
+  --notification-error-text: #ff4d4d;
+  --notification-error-border: rgba(255, 0, 0, 0.3);
+}
+
+body.theme-blue {
+  --accent-color: #00A2FF;
+  --accent-color-secondary: #A8DFFF;
+  --accent-color-rgb: 0, 162, 255;
+  --text-on-accent: white;
+}
+
+body.theme-red {
+  --accent-color: #FF4D4D;
+  --accent-color-secondary: #FFB8B8;
+  --accent-color-rgb: 255, 77, 77;
+  --text-on-accent: white;
+}
+
+body.theme-purple {
+  --accent-color: #C566FF;
+  --accent-color-secondary: #EABFFF;
+  --accent-color-rgb: 197, 102, 255;
+  --text-on-accent: white;
+}
+
+body.theme-orange {
+  --accent-color: #FFAB40;
+  --accent-color-secondary: #FFD8A8;
+  --accent-color-rgb: 255, 171, 64;
+  --text-on-accent: black;
+}
+
+body.theme-yellow {
+  --accent-color: #FFEA00;
+  --accent-color-secondary: #FFF590;
+  --accent-color-rgb: 255, 234, 0;
+  --text-on-accent: black;
+}
+
+body.theme-pink {
+  --accent-color: #FF69B4;
+  --accent-color-secondary: #FFC0D9;
+  --accent-color-rgb: 255, 105, 180;
+  --text-on-accent: white;
+}
+
+body.theme-white-accent {
+  --accent-color: #FFFFFF;
+  --accent-color-secondary: #E0E0E0; /* Light gray for secondary if accent is pure white */
+  --accent-color-rgb: 255, 255, 255;
+  --text-on-accent: black;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Fredoka One', sans-serif;
+}
+
+body {
+  background: var(--background-color);
+  color: var(--text-color);
+  padding: 15px; 
+  min-height: 100vh;
+  /* transition: background-color 0.3s, color 0.3s; Removed */
+}
+
+.header {
+  font-size: 48px;
+  color: var(--accent-color);
+  margin-top: 80px;
+  margin-bottom: 40px;
+  text-align: center;
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 0 15px;
+}
+
+.box, .card {
+  background-color: var(--box-bg-color);
+  padding: 20px; 
+  border-radius: 15px; 
+  border: 1px solid rgba(var(--accent-color-rgb), 0.2);
+  box-shadow: 0 0 10px rgba(var(--accent-color-rgb), 0.1);
+  backdrop-filter: blur(10px);
+  min-width: 360px;
+  width: 100%; 
+  text-align: center;
+  flex: 1 1 380px;
+  max-width: 430px;
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-between; 
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.text-input {
+  padding: 12px;
+  border-radius: 10px;
+  background-color: var(--input-bg-color);
+  border: 1px solid rgba(var(--accent-color-rgb), 0.2);
+  color: var(--text-color);
+  font-size: 18px;
+  text-align: center;
+  appearance: none;
+  -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.calculate-button, .profile-button, #languageSelector button, #clearHistoryBtn {
+  width: 100%;
+  background-color: rgba(var(--accent-color-rgb), 0.25);
+  border: 1px solid rgba(var(--accent-color-rgb), 0.4);
+  color: var(--text-color); /* Text color on semi-transparent accent background */
+  font-size: 16px;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+#clearHistoryBtn,
+#languageSelector button {
+    width: auto; 
+    padding: 8px 15px;
+    font-size: 14px;
+}
+
+#languageSelector button {
+    margin: 0 5px;
+}
+
+.calculate-button:hover, .profile-button:hover, #languageSelector button:hover, #clearHistoryBtn:hover {
+  background-color: rgba(var(--accent-color-rgb), 0.5);
+}
+
+.result {
+  margin-top: auto; 
+  font-size: 18px;
+  color: var(--accent-color);
+  display: none;
+}
+
+.avatar-img {
+  width: 100%;
+  border-radius: 16px;
+  margin-bottom: 12px;
+}
+
+.role {
+  font-size: 18px;
+  margin-bottom: 6px;
+  color: var(--accent-color);
+}
+
+.username {
+  font-size: 15px;
+  margin-bottom: 15px;
+  color: var(--accent-color-secondary);
+}
+
+.notification-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  z-index: 9999;
+  display: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); 
+  transition: opacity 0.3s ease-in-out;
+}
+
+.notification-message.success {
+    background-color: rgba(var(--accent-color-rgb), 0.25); 
+    color: var(--text-color); /* Text on semi-transparent success */
+    border: 1px solid rgba(var(--accent-color-rgb), 0.4);
+    box-shadow: 0 0 10px rgba(var(--accent-color-rgb), 0.1);
+}
+
+.notification-message.error {
+  background-color: var(--notification-error-bg);
+  color: var(--notification-error-text);
+  border: 1px solid var(--notification-error-border);
+}
+
+.result button {
+    background-color: rgba(var(--accent-color-rgb), 0.35); /* Slightly more opaque for small button */
+    border: 1px solid rgba(var(--accent-color-rgb), 0.5);
+    color: var(--text-color);
+    border-radius: 8px;
+}
+
+.result button:hover {
+    background-color: rgba(var(--accent-color-rgb), 0.6);
+}
+
+#calculationHistory ul {
+    min-height: 100px; 
+    margin-bottom: auto; 
+}
+
+#calculationHistory ul li {
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(var(--accent-color-rgb), 0.2); 
+}
+
+#calculationHistory ul li:last-child {
+    border-bottom: none;
+}
+
+.profile-button {
+    margin-top: auto; 
+}
+
+.box .input-group + .calculate-button {
+    margin-top: auto; 
+}
+
+
+@media (max-width: 1100px) { 
+  .box, .card {
+    flex-basis: calc(50% - 20px); 
+    max-width: calc(50% - 20px);
+  }
+}
+
+@media (max-width: 600px) { 
+  .box, .card {
+    flex-basis: 100%; 
+    max-width: 100%;
+    min-width: unset; 
+  }
+  .container {
+    gap: 15px; 
+  }
+  body {
+    padding: 15px; 
+  }
+}
+
+/* Theme and Language Selector Styles */
+div[style*="left: 15px"][style*="display: flex"] {
+    /* This div is for the theme selector in LTR */
+}
+
+#themeSelectorContainer {
+    position: relative;
+}
+
+/* Language Selector Styles (now top-right) */
+#languageSelectorContainer {
+    position: relative; /* For its dropdown */
+    /* Fixed positioning is handled inline in HTML */
+}
+
+#themeToggleButton,
+#languageToggleButton {
+    background: var(--box-bg-color);
+    color: var(--text-color);
+    border: 1px solid rgba(var(--accent-color-rgb),0.4);
+    border-radius: 50%; 
+    width: 48px; /* Increased width */
+    height: 48px; /* Increased height */
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+#themeToggleButton i,
+#languageToggleButton i {
+    font-size: 20px; /* Increased icon size */
+}
+
+#themeToggleButton:hover,
+#languageToggleButton:hover {
+    background-color: rgba(var(--accent-color-rgb), 0.2);
+}
+
+#themeDropdown,
+#languageDropdown {
+    display: none; 
+    position: absolute; 
+    top: 50px; 
+    background-color: var(--box-bg-color);
+    border: 1px solid rgba(var(--accent-color-rgb),0.3);
+    border-radius: 8px; 
+    padding: 8px;
+    backdrop-filter: blur(5px);
+    min-width: 160px;
+    z-index: 10002; 
+}
+
+#themeDropdown {
+    left: 0; /* For LTR */
+}
+
+#languageDropdown {
+    right: 0; /* For LTR */
+}
+
+#themeDropdown button,
+#languageDropdown button {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 5px 0;
+    border: 1px solid transparent;
+    background-color: rgba(var(--accent-color-rgb), 0.1);
+    color: var(--text-color);
+    border-radius: 6px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+#themeDropdown button:hover,
+#languageDropdown button:hover {
+    border-color: var(--accent-color);
+    background-color: rgba(var(--accent-color-rgb), 0.2);
+}
+
+/* Specific styles for theme buttons in dropdown */
+#themeDropdown button[data-theme="default"] { background-color: #00FF80; color: black; }
+#themeDropdown button[data-theme="blue"] { background-color: #00A2FF; color: white; }
+#themeDropdown button[data-theme="red"] { background-color: #FF4D4D; color: white; }
+#themeDropdown button[data-theme="purple"] { background-color: #C566FF; color: white; }
+#themeDropdown button[data-theme="orange"] { background-color: #FFAB40; color: black; }
+#themeDropdown button[data-theme="yellow"] { background-color: #FFEA00; color: black; }
+#themeDropdown button[data-theme="pink"] { background-color: #FF69B4; color: white; }
+#themeDropdown button[data-theme="white-accent"] { background-color: #FFFFFF; color: black; }
+
+/* RTL Layout Adjustments */
+body.rtl-layout {
+  text-align: right; /* General RTL text alignment */
+}
+
+/* Override general RTL alignment for header to keep it centered */
+body.rtl-layout .header {
+  text-align: center;
+}
+
+/* Specific element alignments in RTL */
+body.rtl-layout .box,
+body.rtl-layout .card,
+body.rtl-layout .text-input {
+  text-align: right; /* Keep these right-aligned in RTL */
+}
+
+body.rtl-layout #calculationHistory ul {
+  padding-right: 0; 
+}
+
+body.rtl-layout #themeDropdown button,
+body.rtl-layout #languageDropdown button {
+  text-align: right;
+}
+
+/* Positioning of selectors in RTL */
+body.rtl-layout div[style*="left: 15px"][style*="display: flex"] { /* Theme selector parent */
+    left: auto;
+    right: 15px;
+}
+
+body.rtl-layout #themeDropdown {
+    left: auto; /* Override LTR */
+    right: 0;   /* Align dropdown to the right of its parent (which is now top-right of screen) */
+}
+
+body.rtl-layout #languageSelectorContainer {
+    right: auto; 
+    left: 15px;
+}
+
+body.rtl-layout #languageDropdown {
+    right: auto; /* Override LTR */
+    left: 0;     /* Align dropdown to the left of its parent (which is now top-left of screen) */
+}
+
+body.rtl-layout .notification-message {
+    right: auto;
+    left: 20px;
+}
+
+/* Parent container for Theme selector */
+#themeSelectorParent {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 10001;
+    display: flex; /* If it needs to contain more than just the button container */
+    gap: 10px;
+}
+
+/* Parent container for Language selector */
+#languageSelectorParent {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 10001;
+    display: flex; 
+}
+
+#themeSelectorContainer,
+#languageSelectorContainer {
+    position: relative; /* For dropdown positioning */
+}
+
+/* Dropdown positioning in RTL */
+/* Theme dropdown (parent is now top-right) should open to its left or align right */
+body.rtl-layout #themeDropdown {
+    left: auto; 
+    right: 0;   
+}
+
+/* Language dropdown (parent is now top-left) should open to its right or align left */
+body.rtl-layout #languageDropdown {
+    right: auto; 
+    left: 0;     
+}
+
+body.rtl-layout .notification-message {
+    right: auto;
+    left: 20px;
+}
+
+/* Card order in RTL */
+body.rtl-layout .container {
+    flex-direction: row-reverse; /* This will reverse the visual order of cards in RTL */
+}
+
+body.rtl-layout #themeSelectorParent {
+    left: auto;
+    right: 15px;
+}
+
+body.rtl-layout #languageSelectorParent {
+    right: auto;
+    left: 15px;
+}            

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tax rbx</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="themeSelectorParent" class="selector-parent-fixed-left">
+    <div id="themeSelectorContainer">
+      <button id="themeToggleButton" title="Change Theme">
+        <i class="fas fa-palette"></i>
+      </button>
+      <div id="themeDropdown" style="display: none;">
+        <button data-theme="default">Vert</button>
+        <button data-theme="blue">Bleu</button>
+        <button data-theme="red">Rouge</button>
+        <button data-theme="purple">Violet</button>
+        <button data-theme="orange">Orange</button>
+        <button data-theme="yellow">Jaune</button>
+        <button data-theme="pink">Rose</button>
+        <button data-theme="white-accent">Blanc (Accent)</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="languageSelectorParent" class="selector-parent-fixed-right">
+    <div id="languageSelectorContainer">
+      <button id="languageToggleButton" title="Change Language">
+        <i class="fas fa-globe"></i>
+      </button>
+      <div id="languageDropdown" style="display: none;">
+        <button data-lang="fr">Français</button>
+        <button data-lang="en">English</button>
+        <button data-lang="es">Español</button>
+        <button data-lang="he">עברית</button>
+      </div>
+    </div>
+  </div>
+
+  <h1 class="header">
+    <i class="fa-solid fa-business-time"></i> 
+    <span data-key="mainTitle">Robux Tax Calculator</span>
+  </h1>
+
+  <div class="container">
+    <!-- Developer Profile Card (Position 1) -->
+    <div class="card">
+      <div class="role" data-key="role">Main Website Developer</div>
+      <div class="username">@joshuamelg on Roblox</div>
+      <img src="https://tr.rbxcdn.com/30DAY-Avatar-EF83920860691BD10CC067F59A8206BC-Png/352/352/Avatar/Webp/noFilter" class="avatar-img" />
+      <a href="https://www.roblox.com/users/487698574/profile" target="_blank">
+        <button class="profile-button"><i class="fa-solid fa-link"></i> <span data-key="profileButton">Access</span></button>
+      </a>
+    </div>
+
+    <!-- Robux Tax Calculator Card (Position 2) -->
+    <div class="box">
+      <div class="input-group">
+        <input type="number" id="robuxInput" class="text-input" data-key-placeholder="robuxPlaceholder" placeholder="Enter Robux amount..." />
+        <div style="display: flex; align-items: center; justify-content: center; margin-top: 10px; margin-bottom: 10px;">
+          <input type="checkbox" id="inverseModeCheckbox" style="margin-right: 8px;">
+          <label for="inverseModeCheckbox" data-key="calculationModeLabel" style="font-size: 14px;">Calculate amount needed for desired income?</label>
+        </div>
+        <button class="calculate-button" onclick="calculateRobux()">
+            <i class="fa-solid fa-circle-check"></i> <span data-key="calculateButton">Calculate After Tax</span>
+        </button>
+      </div>
+      <div class="result" id="robuxResult">
+        <i class="fa-solid fa-repeat"></i>
+        <span data-key="resultText">You will receive:</span> <span id="robuxOutput"></span> Robux
+        <button onclick="copyResult()" style="margin-left: 10px; padding: 5px 10px; font-size: 12px;" data-key="copyButton">Copy</button>
+      </div>
+    </div>
+
+    <!-- DevEx Estimator Card (Position 3) -->
+    <div class="box" id="devExCard">
+      <h2 data-key="devExTitle" style="font-size: 22px; margin-bottom: 15px;">DevEx Estimator</h2>
+      <div class="input-group">
+        <input type="number" id="devExRobuxInput" class="text-input" data-key-placeholder="devExRobuxPlaceholder" placeholder="Enter Robux for DevEx..." />
+        <button id="devExCalculateBtn" class="calculate-button">
+            <i class="fa-solid fa-dollar-sign"></i> <span data-key="devExCalculateButton">Estimate USD</span>
+        </button>
+      </div>
+      <div class="result" id="devExResult" style="display: none;">
+        <i class="fa-solid fa-money-bill-wave"></i> 
+        <span data-key="devExResultText">Estimated Value:</span> <span id="devExOutputUsd"></span>
+      </div>
+      <p style="font-size: 12px; color: var(--secondary-color); margin-top: 15px;" data-key="devExNote">
+        Based on a rate of $0.0035 USD per Robux. This is an estimate and subject to Roblox DevEx terms and minimums.
+      </p>
+    </div>
+    
+    <!-- Calculation History Card (Position 4) -->
+    <div id="calculationHistory" class="box">
+      <h2 data-key="historyTitle" style="margin-bottom: 15px; font-size: 20px;">Calculation History</h2>
+      <ul style="list-style: none; padding: 0; margin-bottom: 15px; font-size: 14px; text-align: left;">
+        <!-- History items will be populated here by JS -->
+      </ul>
+      <button id="clearHistoryBtn" class="calculate-button" style="width: auto; padding: 8px 15px; font-size: 14px;" data-key="clearHistoryButton">Clear History</button>
+    </div>
+  </div>
+
+  <div id="notification" class="notification-message"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+            
