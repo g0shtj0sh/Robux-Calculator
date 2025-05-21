@@ -29,7 +29,12 @@ const translations = {
     devExNote: "Based on a rate of $0.0035 USD per Robux. This is an estimate and subject to Roblox DevEx terms and minimums.",
     historyEmpty: "History is empty.",
     languageButtonES: "Español",
-    languageButtonHE: "עברית"
+    languageButtonHE: "עברית",
+    currencyPlaceholder: "Enter amount...",
+    currencyCalculateButton: "Calculate Robux",
+    currencyResultText: "Estimated Robux:",
+    currencyToRobuxTitle: "Currency to Robux",
+    robuxToCurrencyTitle: "Robux to Currency"
   },
   fr: {
     mainTitle: "Calculateur de Taxe Robux",
@@ -53,12 +58,17 @@ const translations = {
     clearHistoryButton: "Effacer l'historique",
     devExTitle: "Estimateur DevEx",
     devExRobuxPlaceholder: "Entrez les Robux pour DevEx...",
-    devExCalculateButton: "Estimer en USD",
+    devExCalculateButton: "Calculer la Valeur",
     devExResultText: "Valeur Estimée :",
     devExNote: "Basé sur un taux de 0,0035 $ USD par Robux. Ceci est une estimation et soumis aux conditions et minimums DevEx de Roblox.",
     historyEmpty: "L'historique est vide.",
     languageButtonES: "Español",
-    languageButtonHE: "עברית"
+    languageButtonHE: "עברית",
+    currencyPlaceholder: "Entrez le montant...",
+    currencyCalculateButton: "Calculer les Robux",
+    currencyResultText: "Robux estimés :",
+    currencyToRobuxTitle: "Devise vers Robux",
+    robuxToCurrencyTitle: "Robux vers Devise"
   },
   es: { // Spanish Translations
     mainTitle: "Calculadora de Impuestos Robux",
@@ -80,13 +90,18 @@ const translations = {
     historyEmpty: "El historial está vacío.",
     devExTitle: "Estimador DevEx",
     devExRobuxPlaceholder: "Ingrese Robux para DevEx...",
-    devExCalculateButton: "Estimar USD",
+    devExCalculateButton: "Calcular Valor",
     devExResultText: "Valor Estimado:",
     devExNote: "Basado en una tasa de $0.0035 USD por Robux. Esta es una estimación y está sujeta a los términos y mínimos de DevEx de Roblox.",
     languageButtonFR: "Français",
     languageButtonEN: "English",
     languageButtonES: "Español",
-    languageButtonHE: "עברית"
+    languageButtonHE: "עברית",
+    currencyPlaceholder: "Ingrese el monto...",
+    currencyCalculateButton: "Calcular Robux",
+    currencyResultText: "Robux estimados:",
+    currencyToRobuxTitle: "Moneda a Robux",
+    robuxToCurrencyTitle: "Robux a Moneda"
   },
   he: { // Hebrew Translations (Note: Text direction might need CSS adjustments for full RTL)
     mainTitle: "מחשבון מס Robux",
@@ -108,17 +123,26 @@ const translations = {
     historyEmpty: "ההיסטוריה ריקה.",
     devExTitle: "אומדן DevEx",
     devExRobuxPlaceholder: "הזן Robux ל-DevEx...",
-    devExCalculateButton: "הערך USD",
-    devExResultText: "ערך משוער:",
+    devExCalculateButton: "חשב ערך",
+    devExResultText: ":ערך משוער",
     devExNote: "מבוסס על שער של $0.0035 דולר ארה''ב לכל Robux. זוהי הערכה וכפופה לתנאים ולמינימום של DevEx של Roblox.",
     languageButtonFR: "Français",
     languageButtonEN: "English",
     languageButtonES: "Español",
-    languageButtonHE: "עברית"
+    languageButtonHE: "עברית",
+    currencyPlaceholder: "...הזן סכום",
+    currencyCalculateButton: "Robux חשב",
+    currencyResultText: ":Robux משוער",
+    currencyToRobuxTitle: "המרה ממטבע ל-Robux",
+    robuxToCurrencyTitle: "המרה מ-Robux למטבע"
   }
 };
 
 const DEVEX_RATE = 0.0035;
+const CURRENCY_RATES = {
+  USD: 1,
+  EUR: 0.92  // Taux de conversion approximatif EUR/USD
+};
 
 function applyTranslations(lang) {
   document.querySelectorAll('[data-key]').forEach(element => {
@@ -302,19 +326,24 @@ function calculateDevEx() {
   const inputElement = document.getElementById("devExRobuxInput");
   const outputElement = document.getElementById("devExOutputUsd");
   const resultBox = document.getElementById("devExResult");
+  const selectedCurrency = document.getElementById("selectedCurrency").textContent;
 
   let robux = parseFloat(inputElement.value);
-  if (isNaN(robux) || robux < 0) { // Allow 0 for DevEx, but not negative
-    showNotification(getTranslatedText("notificationInvalidAmount"), "error"); // Can use a more specific error later if needed
+  if (isNaN(robux) || robux < 0) {
+    showNotification(getTranslatedText("notificationInvalidAmount"), "error");
     outputElement.textContent = "-";
     resultBox.style.display = "none";
     return;
   }
 
   let usdValue = robux * DEVEX_RATE;
-  outputElement.textContent = usdValue.toLocaleString(undefined, { style: 'currency', currency: 'USD' });
+  let finalValue = selectedCurrency === "EUR" ? usdValue / CURRENCY_RATES.EUR : usdValue;
+  
+  outputElement.textContent = finalValue.toLocaleString(undefined, { 
+    style: 'currency', 
+    currency: selectedCurrency 
+  });
   resultBox.style.display = "block";
-  // No specific notification for DevEx calculation, result display is enough
 }
 
 function applyTheme(themeName) {
@@ -334,7 +363,7 @@ function loadTheme() {
   applyTheme(savedTheme);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
   const initialPreferredLang = localStorage.getItem('preferredLanguage') || 'en';
 
   const inverseCheckbox = document.getElementById("inverseModeCheckbox");
@@ -483,6 +512,65 @@ document.addEventListener('DOMContentLoaded', () => {
   if (typeof updateAllPlaceholders === 'function') {
       updateAllPlaceholders();
   }
+
+  // Currency conversion button
+  const currencyCalculateBtn = document.getElementById('currencyCalculateBtn');
+  if (currencyCalculateBtn) {
+    currencyCalculateBtn.addEventListener('click', calculateFromCurrency);
+  }
+
+  // Initialize language
+  const savedLang = localStorage.getItem('preferredLanguage') || 'en';
+  applyTranslations(savedLang);
+  if (savedLang === 'he') {
+    document.documentElement.setAttribute('dir', 'rtl');
+    document.body.classList.add('rtl-layout');
+  }
+
+  // Initialize theme
+  loadTheme();
+
+  // Currency selector logic with animation
+  const currencyToggleButton = document.getElementById('currencyToggleButton');
+  const currencyDropdown = document.getElementById('currencyDropdown');
+  const selectedCurrencySpan = document.getElementById('selectedCurrency');
+
+  if (currencyToggleButton && currencyDropdown) {
+    currencyToggleButton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const isActive = currencyDropdown.style.display === 'block';
+      currencyDropdown.style.display = isActive ? 'none' : 'block';
+      currencyToggleButton.classList.toggle('active', !isActive);
+    });
+
+    currencyDropdown.querySelectorAll('button[data-currency]').forEach(button => {
+      button.addEventListener('click', () => {
+        const currency = button.getAttribute('data-currency');
+        selectedCurrencySpan.textContent = currency;
+        currencyDropdown.style.display = 'none';
+        currencyToggleButton.classList.remove('active');
+        
+        // Recalculate if there are existing results
+        const currencyResult = document.getElementById('currencyResult');
+        const devExResult = document.getElementById('devExResult');
+        
+        if (currencyResult.style.display === 'block') {
+          calculateFromCurrency();
+        }
+        if (devExResult.style.display === 'block') {
+          calculateDevEx();
+        }
+      });
+    });
+
+    // Close currency dropdown when clicking outside
+    document.addEventListener('click', (event) => {
+      if (!currencyDropdown.contains(event.target) && !currencyToggleButton.contains(event.target)) {
+        currencyDropdown.style.display = 'none';
+        currencyToggleButton.classList.remove('active');
+      }
+    });
+  }
 });
 
 // Ensure all base functions are defined globally if they are called by others
@@ -549,5 +637,26 @@ if (typeof changeLanguage !== 'function' || changeLanguage.name !== 'changeLangu
             document.body.classList.remove('rtl-layout');
         }
     };
+}
+
+function calculateFromCurrency() {
+  const currencyInput = document.getElementById("currencyInput");
+  const selectedCurrencySpan = document.getElementById("selectedCurrency");
+  const resultBox = document.getElementById("currencyResult");
+  const outputElement = document.getElementById("currencyOutputRobux");
+
+  let amount = parseFloat(currencyInput.value);
+  if (isNaN(amount) || amount <= 0) {
+    showNotification(getTranslatedText("notificationInvalidAmount"), "error");
+    return;
+  }
+
+  const selectedCurrency = selectedCurrencySpan.textContent;
+  const usdAmount = amount / CURRENCY_RATES[selectedCurrency];
+  const robuxAmount = Math.floor(usdAmount / DEVEX_RATE);
+
+  outputElement.textContent = robuxAmount.toLocaleString();
+  resultBox.style.display = "block";
+  showNotification(getTranslatedText("notificationCalculationComplete"), "success");
 }
             

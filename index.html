@@ -78,17 +78,50 @@
 
     <!-- DevEx Estimator Card (Position 3) -->
     <div class="box" id="devExCard">
-      <h2 data-key="devExTitle" style="font-size: 22px; margin-bottom: 15px;">DevEx Estimator</h2>
+      <div class="devex-header">
+        <h2 data-key="devExTitle" style="font-size: 22px;">DevEx Estimator</h2>
+        <div class="currency-selector">
+          <button id="currencyToggleButton" class="currency-toggle-button" title="Change Currency">
+            <span id="selectedCurrency">USD</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div id="currencyDropdown" class="dropdown-menu" style="display: none;">
+            <button data-currency="USD">USD</button>
+            <button data-currency="EUR">EUR</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="separator" style="margin: 15px 0;"></div>
+
+      <!-- Currency to Robux -->
       <div class="input-group">
+        <h3 data-key="currencyToRobuxTitle" style="font-size: 16px; margin-bottom: 10px;">Currency to Robux</h3>
+        <input type="number" id="currencyInput" class="text-input" data-key-placeholder="currencyPlaceholder" placeholder="Entrez le montant..." />
+        <button id="currencyCalculateBtn" class="calculate-button">
+          <i class="fa-solid fa-coins"></i> <span data-key="currencyCalculateButton">Calculer les Robux</span>
+        </button>
+      </div>
+      <div class="result" id="currencyResult" style="display: none;">
+        <i class="fa-solid fa-robot"></i> 
+        <span data-key="currencyResultText">Robux estimés :</span> <span id="currencyOutputRobux"></span>
+      </div>
+
+      <div class="separator" style="margin: 20px 0;"></div>
+
+      <!-- Robux to Currency -->
+      <div class="input-group">
+        <h3 data-key="robuxToCurrencyTitle" style="font-size: 16px; margin-bottom: 10px;">Robux to Currency</h3>
         <input type="number" id="devExRobuxInput" class="text-input" data-key-placeholder="devExRobuxPlaceholder" placeholder="Enter Robux for DevEx..." />
         <button id="devExCalculateBtn" class="calculate-button">
-            <i class="fa-solid fa-dollar-sign"></i> <span data-key="devExCalculateButton">Estimate USD</span>
+          <i class="fa-solid fa-dollar-sign"></i> <span data-key="devExCalculateButton">Estimate USD</span>
         </button>
       </div>
       <div class="result" id="devExResult" style="display: none;">
         <i class="fa-solid fa-money-bill-wave"></i> 
         <span data-key="devExResultText">Estimated Value:</span> <span id="devExOutputUsd"></span>
       </div>
+
       <p style="font-size: 12px; color: var(--secondary-color); margin-top: 15px;" data-key="devExNote">
         Based on a rate of $0.0035 USD per Robux. This is an estimate and subject to Roblox DevEx terms and minimums.
       </p>
